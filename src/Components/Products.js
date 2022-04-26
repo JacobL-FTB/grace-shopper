@@ -8,6 +8,14 @@ import MainCategories from './MainCategories';
 const Products = ({ products }) => {
   const navigate = useNavigate();
 
+  // const addToCartHandler = async(e) => {
+  //   e.preventDefault();
+  //   try {
+      
+  //   } catch (error) {
+      
+  //   }
+  // }
   // const addToCartHandler = async (product) => {
   //   const response = await addToCart(product.price, product.id, 1);
   //   console.log(response);
@@ -35,6 +43,7 @@ const Products = ({ products }) => {
               </div>
               <button
                 onClick={(e) => {
+                  // const response = addToCart(product.price, product.id, 1);
                   const response = addToCart(
                     product.price,
                     product.id,
