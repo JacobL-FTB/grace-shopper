@@ -84,6 +84,22 @@ export const login = async (username, password) => {
   }
 };
 
+export const RemoveProductFromCart = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/cart/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${lstoken}`,
+      },
+    });
+    const info = await response.json();
+    return info;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const userInfo = async () => {
   try {
     const response = await fetch(`${BASE_URL}/user/me`, {
@@ -115,6 +131,7 @@ export const createCart = async () => {
   }
 };
 export const addToCart = async (
+  lstoken,
   price,
   productId,
   count,
@@ -123,8 +140,11 @@ export const addToCart = async (
   description
 ) => {
   try {
+    console.log(lstoken);
     if (!lstoken) {
-      const productArr = localStorage.getItem('products');
+      let edit = false;
+      const productArr = JSON.parse(localStorage.getItem('products'));
+      console.log(productArr);
       if (!productArr) {
         localStorage.setItem(
           'products',
@@ -132,7 +152,21 @@ export const addToCart = async (
             { price, productId, count, imgURL, title, description },
           ])
         );
+        return;
       }
+      for (const product of productArr) {
+        if (product.productId === productId) {
+          count = Number(count);
+          product.count = Number(product.count);
+          edit = true;
+          product.count += count;
+          localStorage.setItem('products', JSON.stringify(productArr));
+        }
+      }
+      if (edit) {
+        return;
+      }
+
       productArr.push({ price, productId, count, imgURL, title, description });
       localStorage.setItem('products', JSON.stringify(productArr));
       return;

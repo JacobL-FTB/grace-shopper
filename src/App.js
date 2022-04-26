@@ -49,18 +49,27 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products products={products} />} />
+        <Route
+          path="/products"
+          element={<Products products={products} token={token} />}
+        />
         <Route
           path="/categories/women"
-          element={<Women products={products} />}
+          element={<Women products={products} token={token} />}
         />
-        <Route path="/categories/men" element={<Men products={products} />} />
-        <Route path="/categories/kids" element={<Kids products={products} />} />
+        <Route
+          path="/categories/men"
+          element={<Men products={products} token={token} />}
+        />
+        <Route
+          path="/categories/kids"
+          element={<Kids products={products} token={token} />}
+        />
         <Route
           path="/categories/accessories"
           element={<Accessories products={products} />}
         />
-        <Route path="products/:id" element={<SingleProduct />} />
+        <Route path="products/:id" element={<SingleProduct token={token} />} />
         <Route
           path="/login"
           element={<Login setToken={setToken} setUserdata={setUserData} />}

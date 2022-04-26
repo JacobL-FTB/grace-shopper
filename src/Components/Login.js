@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login, userInfo } from '../api';
+import { addToCart, login } from '../api';
 
 const Login = ({ setToken, setUserdata }) => {
   const [username, setUsername] = useState('');
@@ -18,10 +18,29 @@ const Login = ({ setToken, setUserdata }) => {
       }
 
       setToken(info.token);
+      setUserdata(info);
       localStorage.setItem('token', info.token);
       const infoU = await userInfo(info.token);
+      console.log(infoU);
       setUserdata(infoU.data);
+
+      const products = JSON.parse(localStorage.getItem('products'));
+      console.log(products);
+      if (products) {
+        for (const product of products) {
+          const response = addToCart(
+            info.token,
+            product.price,
+            product.productId,
+            product.count
+          );
+          console.log(response);
+        }
+        localStorage.removeItem('products');
+      }
+      //
       history('/');
+      history(0);
     } catch (error) {
       console.error(error);
     }

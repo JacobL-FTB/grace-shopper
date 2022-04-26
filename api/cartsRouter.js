@@ -1,4 +1,5 @@
 const express = require('express');
+const { useParams } = require('react-router');
 const {
   createCart,
   getCartById,
@@ -7,6 +8,7 @@ const {
   getCartProducts,
   getCartProductsByUserId,
   editCount,
+  deleteProductFromCart,
 } = require('../db/cart');
 const { requireUser } = require('./utils');
 
@@ -69,6 +71,20 @@ cartsRouter.post('/', requireUser, async (req, res, next) => {
   }
 });
 
+cartsRouter.delete('/:id', requireUser, async (req, res) => {
+  try {
+    const user = req.user;
+    const id = req.params.id;
+    const cart = await getCartByUserId(user.id);
+    console.log(cart, id);
+    const response = await deleteProductFromCart(cart.id, id);
+    console.log(response);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+});
+
 cartsRouter.get('/create', requireUser, async (req, res) => {
   try {
     const user = req.user;
@@ -94,12 +110,14 @@ cartsRouter.get('/create', requireUser, async (req, res) => {
 
 cartsRouter.get('/', requireUser, async (req, res) => {
   try {
+    console.log(req.user);
     const cart = await getCartProductsByUserId(req.user.id);
     console.log(cart);
     res.send({
       cart,
     });
   } catch (error) {
+    console.log(error);
     res.send({
       name: error.name,
       message: error.message,

@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { addToCart, fetchProductById } from '../api';
-import Products from './Products';
 
 import './css/SingleProduct.css';
 import { NotificationManager } from 'react-notifications';
 
-const SingleProduct = () => {
+const SingleProduct = ({ token }) => {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const [count, setCount] = useState(1);
@@ -31,12 +30,19 @@ const SingleProduct = () => {
             min="1"
             max={product.inventory}
             value={count}
-            onChange={(e) => setCount(e.target.value)}
+            onChange={(e) => setCount(Number(e.target.value))}
           ></input>
           <button
             onClick={(e) => {
-              const response = addToCart(product.price, product.id, count);
-              console.log(response);
+              const response = addToCart(
+                token,
+                product.price,
+                product.id,
+                count,
+                product.imgURL,
+                product.title,
+                product.description
+              );
               if (response) {
                 NotificationManager.success(
                   'Added ' + count + ' item(s) to cart!',
