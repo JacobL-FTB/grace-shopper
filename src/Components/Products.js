@@ -28,7 +28,7 @@ const Products = ({ products, token }) => {
               <button
                 onClick={(e) => {
                   // const response = addToCart(product.price, product.id, 1);
-                  console.log(token);
+
                   const response = addToCart(
                     token,
                     product.price,
