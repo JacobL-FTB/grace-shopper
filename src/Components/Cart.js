@@ -5,6 +5,7 @@ import {
   fetchProductById,
   RemoveProductFromCart,
   getProductsFromCart,
+  fetchProducts,
 } from '../api';
 
 import './css/Cart.css';
@@ -38,6 +39,7 @@ const Cart = ({}) => {
     if (!token) {
       localStorage.setItem('products', JSON.stringify(newarr));
     } else {
+      history(0);
       const remove = await RemoveProductFromCart(id);
     }
   };
@@ -137,7 +139,7 @@ const Cart = ({}) => {
                       />
                       <h4>Subtotal: ${productTotal}</h4>
                     </div>
-                    <button onClick={() => RemoveFromCart(product.productId)}>
+                    <button onClick={() => RemoveFromCart(product.id)}>
                       Remove from cart
                     </button>
                   </div>

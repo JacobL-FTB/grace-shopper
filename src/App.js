@@ -21,6 +21,7 @@ import 'react-notifications/lib/notifications.css';
 const App = () => {
   const [products, setProducts] = useState([]);
   const [userInfo, setUserInfo] = useState({});
+  const [token, setToken] = useState([]);
 
   useEffect(() => {
     fetchUser().then((user) => {
@@ -30,11 +31,12 @@ const App = () => {
       }
     });
     createCart();
+    const lstoken = localStorage.getItem('token');
+    setToken(lstoken);
     fetchProducts().then((product) => {
       setProducts(product);
     });
   }, []);
-  console.log(userInfo);
   return (
     <>
       <Navbar setUserInfo={setUserInfo} userInfo={userInfo} />
@@ -42,29 +44,25 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route
           path="/products"
-          element={<Products products={products} token={userInfo.token} />}
+          element={<Products products={products} token={token} />}
         />
         <Route
           path="/categories/women"
-          element={<Women products={products} token={userInfo.token} />}
+          element={<Women products={products} token={token} />}
         />
         <Route
           path="/categories/men"
-          element={<Men products={products} token={userInfo.token} />}
+          element={<Men products={products} token={token} />}
         />
         <Route
           path="/categories/kids"
-          element={<Kids products={products} token={userInfo.token} />}
+          element={<Kids products={products} token={token} />}
         />
         <Route
           path="/categories/accessories"
           element={<Accessories products={products} />}
         />
-        <Route path="products/:id" element={<SingleProduct />} />
-        <Route
-          path="products/:id"
-          element={<SingleProduct token={userInfo.token} />}
-        />
+        <Route path="products/:id" element={<SingleProduct token={token} />} />
         <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
