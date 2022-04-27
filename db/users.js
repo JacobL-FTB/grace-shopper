@@ -57,7 +57,7 @@ const getUser = async ({ username, password }) => {
   try {
     const user = await getUserByUsername(username);
     if (!user) {
-      throw new Error('No user with that username exists');
+      return;
     }
 
     const hashedPassword = user.password;

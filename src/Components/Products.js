@@ -1,28 +1,12 @@
-const { useNavigate, Link } = require('react-router-dom');
+const { useNavigate } = require('react-router-dom');
 import { NotificationManager } from 'react-notifications';
 
 import { addToCart } from '../api';
 import './css/Products.css';
 import MainCategories from './MainCategories';
 
-const Products = ({ products }) => {
+const Products = ({ products, token }) => {
   const navigate = useNavigate();
-
-  // const addToCartHandler = async(e) => {
-  //   e.preventDefault();
-  //   try {
-      
-  //   } catch (error) {
-      
-  //   }
-  // }
-  // const addToCartHandler = async (product) => {
-  //   const response = await addToCart(product.price, product.id, 1);
-  //   console.log(response);
-  //   if (response.id) {
-  //     NotificationManager.success('Added 1 item(s) to cart!', 'Success!', 1500);
-  //   }
-  // };
 
   return (
     <div className="products_main">
@@ -45,12 +29,14 @@ const Products = ({ products }) => {
                 onClick={(e) => {
                   // const response = addToCart(product.price, product.id, 1);
                   const response = addToCart(
+                    token,
                     product.price,
                     product.id,
                     1,
                     product.imgURL,
                     product.title,
-                    product.description
+                    product.description,
+                    product.inventory
                   );
                   if (response) {
                     NotificationManager.success(

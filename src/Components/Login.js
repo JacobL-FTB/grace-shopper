@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchUser, login } from '../api';
+import { fetchUser, addToCart, login } from '../api';
 
-import "./css/Login.css";
+import './css/Login.css';
 
-const Login = ({setUserInfo}) => {
+const Login = ({ setUserInfo }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,14 +16,33 @@ const Login = ({setUserInfo}) => {
       const info = await login(username, password);
       if (info.error) {
         return setError(info.error);
-      };
-      if(info) {
-        history('/');
-        fetchUser()
-          .then(user => {
-            setUserInfo(user);
-          });
       }
+      console.log(info);
+      if (info) {
+        history('/');
+        fetchUser().then((user) => {
+          setUserInfo(user);
+        });
+      }
+      localStorage.setItem('token', info.token);
+
+      const products = JSON.parse(localStorage.getItem('products'));
+      console.log(products);
+      if (products) {
+        for (const product of products) {
+          const response = addToCart(
+            info.token,
+            product.price,
+            product.productId,
+            product.count
+          );
+          console.log(response);
+        }
+        localStorage.removeItem('products');
+      }
+      //
+      history('/');
+      history(0);
     } catch (error) {
       throw error;
     }
@@ -55,10 +74,9 @@ const Login = ({setUserInfo}) => {
             }}
           />
           <button type="submit"> Log In</button>
-          <p>Don't have an account?  
-            <Link to="/register">
-              Register
-            </Link>
+          <p>
+            Don't have an account?
+            <Link to="/register">Register</Link>
           </p>
         </form>
         {error && <p> {error}!</p>}
