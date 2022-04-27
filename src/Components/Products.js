@@ -27,6 +27,7 @@ const Products = ({ products, token }) => {
               </div>
               <button
                 onClick={(e) => {
+                  // const response = addToCart(product.price, product.id, 1);
                   const response = addToCart(
                     token,
                     product.price,
@@ -34,7 +35,8 @@ const Products = ({ products, token }) => {
                     1,
                     product.imgURL,
                     product.title,
-                    product.description
+                    product.description,
+                    product.inventory
                   );
                   if (response) {
                     NotificationManager.success(

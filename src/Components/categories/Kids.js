@@ -33,7 +33,11 @@ const Kids = ({ products, token }) => {
                     token,
                     product.price,
                     product.id,
-                    1
+                    1,
+                    product.imgURL,
+                    product.title,
+                    product.description,
+                    product.inventory
                   );
                   if (response) {
                     NotificationManager.success(

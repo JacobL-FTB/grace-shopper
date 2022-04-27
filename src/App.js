@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './app.css';
-import { fetchProducts, userInfo } from './api';
+import { fetchProducts, fetchUser } from './api';
 import { createCart } from './api';
 import Cart from './Components/Cart';
 import Home from './Components/Home';
@@ -20,61 +20,53 @@ import 'react-notifications/lib/notifications.css';
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [token, setToken] = useState('');
-  const [userData, setUserData] = useState({});
-
-  const fetchUser = async () => {
-    try {
-      const IsToken = localStorage.getItem('token');
-      if (IsToken) {
-        setToken(IsToken);
-        const response = await userInfo();
-        setUserData(response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
-    fetchUser();
+    fetchUser().then((user) => {
+      console.log(user, 'user');
+      if (user) {
+        setUserInfo(user);
+      }
+    });
     createCart();
     fetchProducts().then((product) => {
       setProducts(product);
     });
   }, []);
-
+  console.log(userInfo);
   return (
     <>
-      <Navbar />
+      <Navbar setUserInfo={setUserInfo} userInfo={userInfo} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
           path="/products"
-          element={<Products products={products} token={token} />}
+          element={<Products products={products} token={userInfo.token} />}
         />
         <Route
           path="/categories/women"
-          element={<Women products={products} token={token} />}
+          element={<Women products={products} token={userInfo.token} />}
         />
         <Route
           path="/categories/men"
-          element={<Men products={products} token={token} />}
+          element={<Men products={products} token={userInfo.token} />}
         />
         <Route
           path="/categories/kids"
-          element={<Kids products={products} token={token} />}
+          element={<Kids products={products} token={userInfo.token} />}
         />
         <Route
           path="/categories/accessories"
           element={<Accessories products={products} />}
         />
-        <Route path="products/:id" element={<SingleProduct token={token} />} />
+        <Route path="products/:id" element={<SingleProduct />} />
         <Route
-          path="/login"
-          element={<Login setToken={setToken} setUserdata={setUserData} />}
+          path="products/:id"
+          element={<SingleProduct token={userInfo.token} />}
         />
-        <Route path="/register" element={<Register setToken={setToken} />} />
+        <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
       <NotificationContainer />

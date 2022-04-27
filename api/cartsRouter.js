@@ -14,20 +14,6 @@ const { requireUser } = require('./utils');
 
 const cartsRouter = express.Router();
 
-// cartsRouter.use("/", requireUser, async(req, res, next) => {
-//   const {id} = req.user;
-//   try {
-//     await createCart(id);
-//     const newCart = await getCartByUserId(id);
-//     res.send({newCart});
-//   } catch (error) {
-//     res.send({
-//       name: error.name,
-//       message: error.message
-//     })
-//   }
-// });
-
 cartsRouter.post('/', requireUser, async (req, res, next) => {
   const { id } = req.user;
   const { count, price, productId } = req.body;
@@ -122,6 +108,18 @@ cartsRouter.get('/', requireUser, async (req, res) => {
       name: error.name,
       message: error.message,
     });
+  }
+});
+
+cartsRouter.patch('/:id', requireUser, async (req, res) => {
+  try {
+    const cart = await getCartProductsByUserId(req.user.id);
+    const { id } = req.params;
+    const { count } = req.body;
+    const response = await editCount(count, cart.id, id);
+    return response;
+  } catch (error) {
+    throw error;
   }
 });
 

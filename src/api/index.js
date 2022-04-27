@@ -130,6 +130,25 @@ export const createCart = async () => {
     throw error;
   }
 };
+export const editProductCount = async (count, id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/cart/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${lstoken}`,
+      },
+      body: JSON.stringify({
+        count,
+      }),
+    });
+    const info = response.json();
+    return info;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addToCart = async (
   lstoken,
   price,
@@ -137,7 +156,8 @@ export const addToCart = async (
   count,
   imgURL,
   title,
-  description
+  description,
+  inventory
 ) => {
   try {
     console.log(lstoken);
@@ -149,7 +169,7 @@ export const addToCart = async (
         localStorage.setItem(
           'products',
           JSON.stringify([
-            { price, productId, count, imgURL, title, description },
+            { price, productId, count, imgURL, title, description, inventory },
           ])
         );
         return;
@@ -167,7 +187,15 @@ export const addToCart = async (
         return;
       }
 
-      productArr.push({ price, productId, count, imgURL, title, description });
+      productArr.push({
+        price,
+        productId,
+        count,
+        imgURL,
+        title,
+        description,
+        inventory,
+      });
       localStorage.setItem('products', JSON.stringify(productArr));
       return;
     }
@@ -201,6 +229,16 @@ export const getProductsFromCart = async () => {
     });
     const info = await response.json();
     return info.cart;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchReviews = async (id) => {
+  try {
+    const resp = await fetch(`${BASE_URL}/reviews/${id}`);
+    const info = await resp.json();
+    return info.productReviews;
   } catch (error) {
     throw error;
   }
