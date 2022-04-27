@@ -14,14 +14,14 @@ const userRouter = express.Router();
 
 userRouter.get('/', async (req, res) => {
   try {
-    if(req.user) {
+    if (req.user) {
       res.send(req.user);
-      return
+      return;
     }
   } catch (error) {
     res.send({
-      message: error.message
-    })
+      message: error.message,
+    });
   }
 });
 
@@ -125,6 +125,7 @@ userRouter.post('/login', async (req, res, next) => {
 
     if (!user) {
       res.send({ error: 'No user found' });
+      return;
     }
 
     const token = jwt.sign(
