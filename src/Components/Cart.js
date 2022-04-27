@@ -137,6 +137,9 @@ const Cart = ({}) => {
                       />
                       <h4>Subtotal: ${productTotal}</h4>
                     </div>
+                    <button onClick={() => RemoveFromCart(product.productId)}>
+                      Remove from cart
+                    </button>
                   </div>
                 );
               })
