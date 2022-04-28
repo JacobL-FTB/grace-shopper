@@ -1,5 +1,4 @@
 const express = require('express');
-const { useParams } = require('react-router');
 const {
   createCart,
   getCartById,
@@ -9,6 +8,7 @@ const {
   getCartProductsByUserId,
   editCount,
   deleteProductFromCart,
+  purchaseCart,
 } = require('../db/cart');
 const { requireUser } = require('./utils');
 
@@ -88,6 +88,21 @@ cartsRouter.get('/create', requireUser, async (req, res) => {
     const newCart = createCart(user.id);
     console.error('Created New Cart');
     res.send(newCart);
+    return;
+  } catch (error) {
+    throw error;
+  }
+});
+
+cartsRouter.patch('/purchase', requireUser, async (req, res) => {
+  try {
+    const user = req.user;
+    const cart = await getCartByUserId(user.id);
+    if (!cart) {
+      return;
+    }
+    const purchase = await purchaseCart(cart.id);
+    res.send(purchase);
     return;
   } catch (error) {
     throw error;

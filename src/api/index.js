@@ -149,6 +149,22 @@ export const editProductCount = async (count, id) => {
   }
 };
 
+export const purchaseCart = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/cart/purchase`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${lstoken}`,
+      },
+    });
+    const info = await response.text();
+    return info;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addToCart = async (
   lstoken,
   price,
