@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "node": "node index.js",
     "start:dev": "nodemon index.js",
     "seed": "node ./db/seed.js",
     "seed:dev": "nodemon ./db/seed.js",
     "react": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "heroku-postbuild": "node index.js && react-scripts start"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-id-generator": "^3.0.2",
+    "react-icons": "^4.3.1",
+    "react-notifications": "^1.7.3",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1"
   },

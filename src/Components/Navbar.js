@@ -1,93 +1,69 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import './css/Navbar.css';
+import { BsCart2 } from 'react-icons/bs';
 
-// const linkStyle = {
-// color: "white",
-// margin: "10px",
-// fontSize: "20px",
-// display: "inline-block",
-// marginRight: "1em",
+const Navbar = ({ setUserInfo, userInfo }) => {
+  const lstoken = localStorage.getItem('token');
 
-// textDecoration: "none",
-//
-
-const navLinkStyles = ({ isActive }) => {
-	return {
-		fontWeight: isActive ? "bold" : "normal",
-		// textDecoration: isActive ? "none " : "underline",
-		margin: "7px",
-		fontSize: "20px",
-		display: "inline-block",
-		marginRight: "1em",
-		textDecoration: "none",
-	};
-};
-
-const Navbar = ({ admin, setAdmin, userdata, setToken, setUserdata }) => {
-	// console.log("navbar", admin);
-	// console.log("userdata", userdata);
-	return (
-		<>
-			<div className="heading">
-				<div className="horizontal-nav1">
-					<span className="prj-name">Grace Shopper </span>
-
-					<span className="authors"> J. E. C. </span>
-				</div>
-
-				<div className="horizontal-nav2">
-					<NavLink to="/" style={navLinkStyles}>
-						HOME
-					</NavLink>
-
-					<NavLink to="/products" style={navLinkStyles}>
-						SHOP ALL
-					</NavLink>
-
-					<NavLink to="/cart" style={navLinkStyles}>
-						CART
-					</NavLink>
-
-					{!userdata && (
-						<NavLink to="/register" style={navLinkStyles}>
-							REGISTER
-						</NavLink>
-					)}
-
-					{!userdata && (
-						<NavLink to="/login" style={navLinkStyles}>
-							LOGIN
-						</NavLink>
-					)}
-
-					{userdata && (
-						<NavLink
-							to="/"
-							style={navLinkStyles}
-							onClick={() => {
-								setToken("");
-								setUserdata(null);
-								setAdmin(false);
-								localStorage.removeItem("token");
-							}}
-						>
-							LOG OUT
-						</NavLink>
-					)}
-
+  if (lstoken) {
+    return (
+      <div className="navbar_main">
+        <div className="navbar_logo">
+          <img src={require('./css/displays/JEC-logo.png')} />
+          <div>
+            <h1>just enough clothes</h1>
+            <p>Jacob. Emma. Carmen</p>
+          </div>
+        </div>
+        <div>
+          <Link to="/">HOME</Link>
+          <Link to="/products">SHOP ALL</Link>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              localStorage.removeItem('token');
+              setUserInfo({});
+            }}
+          >
+            LOG OUT
+          </button>
+					
 					{admin && (
 						<NavLink to="/admin" style={navLinkStyles}>
 							ADMIN
 						</NavLink>
 					)}
-				</div>
 
-				<div className="horizontal-nav3">
-					{userdata ? <span>Hello {userdata.username} </span> : null}
-				</div>
-			</div>
-		</>
-	);
+
+
+          <Link id="cart-link" to="/cart">
+            <BsCart2 />
+          </Link>
+        </div>
+      </div>
+    );
+  } else if (!lstoken) {
+    return (
+      <div className="navbar_main">
+        <div className="navbar_logo">
+          <img src={require('./css/displays/JEC-logo.png')} />
+          <div>
+            <h1>just enough clothes</h1>
+            <p>Jacob. Emma. Carmen</p>
+          </div>
+        </div>
+        <div>
+          <Link to="/">HOME</Link>
+          <Link to="/products">SHOP ALL</Link>
+          <Link to="/register">REGISTER</Link>
+          <Link to="/login">LOG IN</Link>
+          <Link id="cart-link" to="/cart">
+            <BsCart2 />
+          </Link>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Navbar;

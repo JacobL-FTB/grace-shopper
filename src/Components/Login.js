@@ -1,81 +1,93 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login, userInfo } from "../api";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { fetchUser, addToCart, login } from '../api';
 
-const Login = ({ setToken, setUserdata, setAdmin }) => {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
-	const history = useNavigate();
+import './css/Login.css';
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		setError("");
-		try {
-			const info = await login(username, password);
-			if (info.error) {
-				return setError(info.error);
-			}
+const Login = ({ setUserInfo }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const history = useNavigate();
 
-			setToken(info.token);
-			localStorage.setItem("token", info.token);
-			const infoU = await userInfo(info.token);
-			console.log("infoU", infoU);
-			setUserdata(infoU);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const info = await login(username, password);
+      if (info.error) {
+        return setError(info.error);
+      }
+      console.log(info);
+      if (info) {
+        history('/');
+        fetchUser().then((user) => {
+          setUserInfo(user);
+        });
+      }
+      localStorage.setItem('token', info.token);
 
-			if (infoU.isAdmin) {
+      const products = JSON.parse(localStorage.getItem('products'));
+      console.log(products);
+      if (products) {
+        for (const product of products) {
+          const response = addToCart(
+            info.token,
+            product.price,
+            product.productId,
+            product.count
+          );
+          console.log(response);
+        }
+        localStorage.removeItem('products');
+      }
+      //
+      if (infoU.isAdmin) {
 				setAdmin(infoU.isAdmin);
 				history("/admin");
+        history(0)
 			} else {
 				history("/");
+         history(0)
 			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
+    } catch (error) {
+      throw error;
+    }
+  };
+  return (
+    <div className="login_container">
+      <div className="login_main">
+        <form onSubmit={handleSubmit}>
+          <h2>Welcome Back!</h2>
+          <label>Username:</label>
+          <input
+            required
+            type="text"
+            placeholder="Enter username"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          />
 
-	return (
-		<>
-			<h2>Login</h2>
-
-			<form className="login-form" onSubmit={handleSubmit}>
-				<div className="login-form-grp">
-					<label>Name</label>
-					<input
-						required
-						type="text"
-						placeholder="Enter username"
-						value={username}
-						onChange={(e) => {
-							setUsername(e.target.value);
-						}}
-					/>
-				</div>
-
-				<div className="login-form-grp">
-					<label>Password</label>
-					<input
-						required
-						type="password"
-						placeholder="Enter password"
-						value={password}
-						onChange={(e) => {
-							setPassword(e.target.value);
-						}}
-					/>
-				</div>
-
-				<button type="submit"> Log In</button>
-			</form>
-
-			<div className="goto-register ">
-				<Link to="/register">
-					Don't have an account? Click here to register
-				</Link>
-			</div>
-
-			{error && <div> {error}!</div>}
-		</>
-	);
+          <label>Password:</label>
+          <input
+            required
+            text="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+          <button type="submit"> Log In</button>
+          <p>
+            Don't have an account?
+            <Link to="/register">Register</Link>
+          </p>
+        </form>
+        {error && <p> {error}!</p>}
+      </div>
+    </div>
+  );
 };
 export default Login;

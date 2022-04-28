@@ -1,114 +1,100 @@
-import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { fetchProducts, userInfo } from "./api";
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import './app.css';
+import { fetchProducts, fetchUser } from './api';
+import { createCart } from './api';
+import Cart from './Components/Cart';
+import Home from './Components/Home';
+import Login from './Components/Login';
+import Navbar from './Components/Navbar';
+import Products from './Components/Products';
+import Register from './Components/Register';
+import SingleProduct from './Components/SingleProduct';
+import Women from './Components/categories/Women';
+import Men from './Components/categories/Men';
+import Kids from './Components/categories/Kids';
+import Accessories from './Components/categories/Accessories';
+import { NotificationContainer } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import Checkout from './Components/Checkout';
+import Admin from './Components/Admin';
+import CreateAdmin from './Components/CreateAdmin';
+import CreateProducts from './Components/CreateProducts';
+import ReadAdminTable from './Components/ReadAdminTable';
+import ReadProductTable from './Components/ReadProductTable';
 
-import {
-	Navbar,
-	Home,
-	Register,
-	Products,
-	Cart,
-	Login,
-	Mens,
-	Womens,
-	Kids,
-	Accessories,
-	ShopAll,
-	Admin,
-	CreateAdmin,
-	CreateProducts,
-	ReadAdminTable,
-} from "./Components";
+const App = () => {
+  const [products, setProducts] = useState([]);
+  const [cartProducts, setCartProducts] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
+  const [checkoutProducts, setCheckoutProducts] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [token, setToken] = useState([]);
 
-function App() {
-	const [cartIsEmpty] = useState(false);
-	const [token, setToken] = useState("");
-	const [userdata, setUserdata] = useState(null);
-	const [products, setProducts] = useState([]);
-	const [admin, setAdmin] = useState(false);
-	// const [adminUsers, setAdminUsers] = useState([]);
-
-	const fetchUser = async () => {
-		// try {
-		const IsToken = localStorage.getItem("token");
-		if (IsToken) {
-			setToken(IsToken);
-			const response = await userInfo(IsToken);
-			setUserdata(response);
-			setAdmin(response.isAdmin);
-		}
-		// } catch (error) {
-		// 	console.log(error);
-		// }
-	};
-
-	useEffect(() => {
-		fetchUser();
-
-		try {
-			fetchProducts().then((product) => {
-				setProducts(product);
-			});
-
-			// fetchAdmin().then((adminUsers) => {
-			// 	// console.log("adminUsers", adminUsers);
-			// 	setAdminUsers(adminUsers);
-			// });
-		} catch (error) {
-			console.log(error);
-		}
-	}, []);
-
-	return (
-		<div className="App">
-			<Navbar
-				admin={admin}
-				setAdmin={setAdmin}
-				setToken={setToken}
-				userdata={userdata}
-				setUserdata={setUserdata}
-			/>
-			<Routes>
-				<Route
-					path="/"
-					element={<Home />}
-					setUserdata={setUserdata}
-					userdata={userdata}
-				/>
-
-				<Route path="/products" element={<Products />}>
-					<Route index element={<ShopAll products={products} />} />
-					<Route path="mens" element={<Mens products={products} />} />
-
-					<Route path="womens" element={<Womens products={products} />} />
-
-					<Route path="kids" element={<Kids products={products} />} />
-
-					<Route
-						path="accessories"
-						element={<Accessories products={products} />}
-					/>
-				</Route>
-
-				<Route path="/register" element={<Register setToken={setToken} />} />
-
-				<Route
-					path="/login"
-					element={
-						<Login
-							setToken={setToken}
-							setUserdata={setUserdata}
-							setAdmin={setAdmin}
-						/>
-					}
-				/>
-
-				<Route
-					path="/cart"
-					element={cartIsEmpty ? <Navigate to="/products" /> : <Cart />}
-				/>
-
-				<Route path="/admin" element={<Admin />}>
+  useEffect(() => {
+    fetchUser().then((user) => {
+      console.log(user, 'user');
+      if (user) {
+        setUserInfo(user);
+      }
+    });
+    createCart();
+    const lstoken = localStorage.getItem('token');
+    setToken(lstoken);
+    fetchProducts().then((product) => {
+      setProducts(product);
+    });
+  }, []);
+  return (
+    <>
+      <Navbar setUserInfo={setUserInfo} userInfo={userInfo} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/products"
+          element={<Products products={products} token={token} />}
+        />
+        <Route
+          path="/categories/women"
+          element={<Women products={products} token={token} />}
+        />
+        <Route
+          path="/categories/men"
+          element={<Men products={products} token={token} />}
+        />
+        <Route
+          path="/categories/kids"
+          element={<Kids products={products} token={token} />}
+        />
+        <Route
+          path="/categories/accessories"
+          element={<Accessories products={products} />}
+        />
+        <Route path="products/:id" element={<SingleProduct token={token} />} />
+        <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              setCheckoutProducts={setCheckoutProducts}
+              setTotal={setTotal}
+              setCartProducts={setCartProducts}
+            />
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <Checkout
+              checkoutProducts={checkoutProducts}
+              total={total}
+              cartProducts={cartProducts}
+            />
+          }
+        />
+	<Route path="/admin" element={<Admin />}>
 					<Route path="createAdmin" element={<CreateAdmin token={token} />} />
 					<Route
 						path="createProduct"
@@ -121,9 +107,13 @@ function App() {
 						}
 					/>
 				</Route>
-			</Routes>
-		</div>
-	);
-}
+
+
+
+      </Routes>
+      <NotificationContainer />
+    </>
+  );
+};
 
 export default App;

@@ -45,6 +45,12 @@ app.use((err, req, res, next) => {
 	});
 });
 
+app.use(express.static('build'));
+
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/build/index.html');
+});
+
 app.listen(PORT, () => {
 	console.log("server is up!", PORT);
 

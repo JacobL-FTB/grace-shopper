@@ -12,12 +12,15 @@ const Register = ({ setToken }) => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+<<<<<<< HEAD
 		setError("");
 		console.log(`usernaem: ${username}`);
 		console.log(`email: ${email}`);
 		console.log(`password: ${password}`);
 
 		setError("");
+=======
+>>>>>>> 19e97630e8989212770d504f6aacd9a097cd5916
 		if (password !== confirm) {
 			setError("Confirm password does not match");
 			return;
@@ -43,12 +46,20 @@ const Register = ({ setToken }) => {
 	};
 
 	return (
+<<<<<<< HEAD
 		<>
 			<h2> Register</h2>
 
 			<form className="register-form" onSubmit={handleSubmit}>
 				<div className="register-form-grp">
 					<label>Email</label>
+=======
+		<div className="login_container">
+			<div className="login_main">
+				<form onSubmit={handleSubmit}>
+					<h2>Thanks for joining!</h2>
+					<label>Email:</label>
+>>>>>>> 19e97630e8989212770d504f6aacd9a097cd5916
 					<input
 						required
 						type="text"
@@ -57,11 +68,16 @@ const Register = ({ setToken }) => {
 						onChange={(e) => {
 							setEmail(e.target.value);
 						}}
+<<<<<<< HEAD
 					></input>
 				</div>
 
 				<div className="register-form-grp">
 					<label>Name</label>
+=======
+					/>
+					<label>Username:</label>
+>>>>>>> 19e97630e8989212770d504f6aacd9a097cd5916
 					<input
 						required
 						type="text"
@@ -70,11 +86,16 @@ const Register = ({ setToken }) => {
 						onChange={(e) => {
 							setUsername(e.target.value);
 						}}
+<<<<<<< HEAD
 					></input>
 				</div>
 
 				<div className="register-form-grp">
 					<label>Password</label>
+=======
+					/>
+					<label>Password:</label>
+>>>>>>> 19e97630e8989212770d504f6aacd9a097cd5916
 					<input
 						required
 						type="password"
@@ -84,6 +105,7 @@ const Register = ({ setToken }) => {
 						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
+<<<<<<< HEAD
 					></input>
 				</div>
 
@@ -110,6 +132,35 @@ const Register = ({ setToken }) => {
 
 			{error && <div> {error}!</div>}
 		</>
+=======
+					/>
+					{password.length !== 0 && 
+						<>
+						<label>Confirm Password:</label>
+						<input
+							required
+							type="password"
+							// minLength="8"
+							placeholder="Confirm password.."
+							value={confirm}
+							onChange={(e) => {
+								setConfirm(e.target.value);
+							}}
+						/>
+						</>
+					}
+					<button type="submit">Register</button>
+					<p>
+						Already have an account?
+						<Link to="/login">
+							Log in
+						</Link>
+					</p>
+				</form>
+				{error && <p> {error}!</p>}
+			</div>
+		</div>
+>>>>>>> 19e97630e8989212770d504f6aacd9a097cd5916
 	);
 };
 export default Register;

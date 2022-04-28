@@ -13,9 +13,25 @@ const { requireAdmin } = require("./utils");
 
 const userRouter = express.Router();
 
-userRouter.get("/", async (req, res) => {
-	console.log("here is the current user", req.user);
-	res.send("User Page");
+userRouter.get('/', async (req, res) => {
+  try {
+    if (req.user) {
+      res.send(req.user);
+      return;
+    }
+  } catch (error) {
+    res.send({
+      message: error.message,
+    });
+  }
+});
+
+userRouter.get('/me', async (req, res) => {
+  try {
+    req.user ? res.send(req.user) : res.send('Error: No user logged in.');
+  } catch (error) {
+    throw error;
+  }
 });
 
 userRouter.get("/me", async (req, res) => {
@@ -160,39 +176,40 @@ userRouter.get("/login", async (req, res) => {
 	res.send("Login Page");
 });
 
-userRouter.post("/login", async (req, res, next) => {
-	const { username, password } = req.body;
+userRouter.post('/login', async (req, res, next) => {
+  const { username, password } = req.body;
 
-	if (!username || !password) {
-		next({
-			name: "MissingCredentialsError",
-			message: "Please supply both a username and password",
-		});
-	}
+  if (!username || !password) {
+    next({
+      name: 'MissingCredentialsError',
+      message: 'Please supply both a username and password',
+    });
+  }
 
-	try {
-		const user = await getUser({ username, password });
+  try {
+    const user = await getUser({ username, password });
 
-		if (!user) {
-			res.send({ error: "No user found" });
-		}
+    if (!user) {
+      res.send({ error: 'No user found' });
+      return;
+    }
 
-		const token = jwt.sign(
-			{
-				id: user.id,
-				username: user.username,
-			},
-			process.env.SECRET_KEY
-		);
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+      },
+      process.env.SECRET_KEY
+    );
 
-		user.token = token;
+    user.token = token;
 
-		res.send({
-			message: "you're logged in!!!",
-			token,
-		});
-	} catch (error) {
-		throw error;
-	}
+    res.send({
+      message: "you're logged in!!!",
+      token,
+    });
+  } catch (error) {
+    throw error;
+  }
 });
 module.exports = userRouter;
