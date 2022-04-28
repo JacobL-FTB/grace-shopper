@@ -17,10 +17,14 @@ import Kids from './Components/categories/Kids';
 import Accessories from './Components/categories/Accessories';
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import Checkout from './Components/Checkout';
 
 const App = () => {
   const [products, setProducts] = useState([]);
+  const [cartProducts, setCartProducts] = useState([]);
   const [userInfo, setUserInfo] = useState({});
+  const [checkoutProducts, setCheckoutProducts] = useState([]);
+  const [total, setTotal] = useState(0);
   const [token, setToken] = useState([]);
 
   useEffect(() => {
@@ -65,7 +69,26 @@ const App = () => {
         <Route path="products/:id" element={<SingleProduct token={token} />} />
         <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              setCheckoutProducts={setCheckoutProducts}
+              setTotal={setTotal}
+              setCartProducts={setCartProducts}
+            />
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <Checkout
+              checkoutProducts={checkoutProducts}
+              total={total}
+              cartProducts={cartProducts}
+            />
+          }
+        />
       </Routes>
       <NotificationContainer />
     </>

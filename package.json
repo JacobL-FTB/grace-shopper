@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "node": "node index.js",
     "start:dev": "nodemon index.js",
     "seed": "node ./db/seed.js",
     "seed:dev": "nodemon ./db/seed.js",
     "react": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "heroku-postbuild": "node index.js && react-scripts start"
   },
   "keywords": [],
   "author": "",

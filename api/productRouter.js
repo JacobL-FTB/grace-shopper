@@ -78,19 +78,20 @@ productRouter.post('/', requireAdmin, async (req, res, next) => {
 });
 
 productRouter.patch('/:id', requireAdmin, async (req, res, next) => {
-  const { id } = req.params;
+  const id = req.params.id;
   const { title, price, category, description, inventory } = req.body;
   try {
-    const product = await editProduct({
+    const product = await editProduct(
       id,
       title,
       price,
       category,
       description,
-      inventory,
-    });
+      inventory
+    );
     res.send({ product });
   } catch (error) {
+    console.log(error);
     next({
       name: error.name,
       message: error.message,

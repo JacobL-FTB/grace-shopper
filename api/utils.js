@@ -10,17 +10,18 @@ function requireUser(req, res, next) {
 
 function requireAdmin(req, res, next) {
   if (req.user) {
-    if (!req.user.isAdmin) {
+    if (req.user.isAdmin === false) {
       res.send({
-        name: 'Hacker Alert!',
-        message: 'You must be an admin to perform this action.',
+        name: 'User Error!',
+        message: 'You must be logged in, and an admin to perform this action.',
       });
+    } else if (req.user.isAdmin === true) {
+      next();
     }
-    next();
   } else {
     res.send({
-      name: 'User Error',
-      message: 'You must be logged in, and an admin to perform this action',
+      name: 'Login Error',
+      message: 'No user is logged in.',
     });
   }
 }

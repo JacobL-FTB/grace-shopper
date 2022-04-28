@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BsCartCheck } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import {
   editProductCount,
@@ -10,7 +11,7 @@ import {
 
 import './css/Cart.css';
 
-const Cart = ({}) => {
+const Cart = ({ setCheckoutProducts, setTotal, setCartProducts }) => {
   const [error, setError] = useState('');
   const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
@@ -42,6 +43,13 @@ const Cart = ({}) => {
       history(0);
       const remove = await RemoveProductFromCart(id);
     }
+  };
+
+  const CheckoutHandler = (total, cartproducts) => {
+    setCheckoutProducts(products);
+    setCartProducts(cart.products);
+    setTotal(total);
+    history('/checkout');
   };
 
   const handleCount = async (product, cartproduct, value) => {
@@ -188,6 +196,12 @@ const Cart = ({}) => {
           )}
           <h1 className="total">Total: {total}</h1>
         </div>
+        <button
+          className="checkout_button"
+          onClick={() => CheckoutHandler(total, products)}
+        >
+          Checkout
+        </button>
       </div>
     </>
   );
