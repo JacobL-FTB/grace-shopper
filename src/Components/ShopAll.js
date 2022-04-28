@@ -1,11 +1,10 @@
-const Mens = ({ products }) => {
+const ShopAll = ({ products }) => {
 	return (
 		<>
-			<h4>All Men's clothing</h4>
+			<h4>Shop All</h4>
 			<div>
-				{products
-					.filter((product) => product.category == "mens")
-					.map(({ description, inventory, price, id, title, imgURL }) => {
+				{products.map(
+					({ description, inventory, price, id, title, imgURL }) => {
 						return (
 							<div key={id} className=" mens-details">
 								<p> {title}</p>
@@ -24,9 +23,10 @@ const Mens = ({ products }) => {
 								<img src={imgURL} width="100" />
 							</div>
 						);
-					})}
+					}
+				)}
 			</div>
 		</>
 	);
 };
-export default Mens;
+export default ShopAll;

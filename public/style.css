@@ -1,10 +1,79 @@
+.heading {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.horizontal-nav1 {
+	display: flex;
+	font-size: 2em;
+	margin: 10px;
+	align-items: baseline;
+	gap: 10px;
+}
+
+.horizontal-nav3 {
+	display: flex;
+	font-size: 1.2em;
+	margin: 10px;
+	justify-content: space-evenly;
+}
+
+.horizontal-nav2 {
+	display: flex;
+	font-size: 1.5em;
+	margin: 10px;
+}
+
 .prj-name {
-  font-family: cursive;
-  color: rgb(14, 83, 172);
-  font-size: 0.3in;
+	font-family: cursive;
+	color: rgb(14, 83, 172);
+	font-size: 0.3in;
 }
 .authors {
-  font-family: "Dancing Script";
-  color: rgb(14, 83, 172);
-  font-size: 0.3in;
+	font-family: "Dancing Script";
+	color: rgb(14, 83, 172);
+	font-size: 0.3in;
 }
+
+/* .jewelry-details, */
+.accessories-details,
+.mens-details,
+.womens-details {
+	border: 1px solid;
+	padding: 10px;
+	box-shadow: 5px 10px rgb(213, 210, 232);
+}
+
+.price {
+	font-weight: bold;
+	font-size: 17px;
+}
+
+.register-form input,
+.login-form input {
+	padding: 8px;
+	width: 35%;
+}
+
+.login-form label,
+.register-form label {
+	display: block;
+}
+
+.register-form-grp,
+.login-form-grp {
+	padding-bottom: 15px;
+}
+
+.goto-register,
+.goto-login {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+/* nav a.active {
+	text-decoration: none;
+	font-weight: bold;
+} */

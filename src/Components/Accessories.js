@@ -1,19 +1,24 @@
-const Mens = ({ products }) => {
+const Accessories = ({ setProducts, products }) => {
+	const toInclude = ["womens", "mens", "kids"];
 	return (
 		<>
-			<h4>All Men's clothing</h4>
+			<h4>All Accessories</h4>
+
 			<div>
 				{products
-					.filter((product) => product.category == "mens")
+					.filter((product) => !toInclude.includes(product.category))
+
 					.map(({ description, inventory, price, id, title, imgURL }) => {
+						console.log("accessories", products);
+
 						return (
-							<div key={id} className=" mens-details">
+							<div key={id} className=" accessories-details">
 								<p> {title}</p>
 
 								<p>{description} </p>
 
 								<p>
-									<span className="price">Price: ${price} </span>
+									<span className="price">Price: ${price}</span>
 								</p>
 
 								<p>
@@ -29,4 +34,4 @@ const Mens = ({ products }) => {
 		</>
 	);
 };
-export default Mens;
+export default Accessories;
