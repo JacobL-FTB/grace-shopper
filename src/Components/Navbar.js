@@ -27,6 +27,15 @@ const Navbar = ({ setUserInfo, userInfo }) => {
           >
             LOG OUT
           </button>
+					
+					{admin && (
+						<NavLink to="/admin" style={navLinkStyles}>
+							ADMIN
+						</NavLink>
+					)}
+
+
+
           <Link id="cart-link" to="/cart">
             <BsCart2 />
           </Link>

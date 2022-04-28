@@ -1,3 +1,31 @@
+.heading {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.horizontal-nav1 {
+	display: flex;
+	font-size: 2em;
+	margin: 10px;
+	align-items: baseline;
+	gap: 10px;
+}
+
+.horizontal-nav3 {
+	display: flex;
+	font-size: 1.2em;
+	margin: 10px;
+	justify-content: space-evenly;
+}
+
+.horizontal-nav2 {
+	display: flex;
+	font-size: 1.5em;
+	margin: 10px;
+}
+
 .prj-name {
 	font-family: cursive;
 	color: rgb(14, 83, 172);
@@ -44,3 +72,8 @@
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
+
+/* nav a.active {
+	text-decoration: none;
+	font-weight: bold;
+} */

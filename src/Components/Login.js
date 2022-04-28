@@ -41,8 +41,14 @@ const Login = ({ setUserInfo }) => {
         localStorage.removeItem('products');
       }
       //
-      history('/');
-      history(0);
+      if (infoU.isAdmin) {
+				setAdmin(infoU.isAdmin);
+				history("/admin");
+        history(0)
+			} else {
+				history("/");
+         history(0)
+			}
     } catch (error) {
       throw error;
     }

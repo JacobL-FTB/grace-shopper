@@ -18,6 +18,11 @@ import Accessories from './Components/categories/Accessories';
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import Checkout from './Components/Checkout';
+import Admin from './Components/Admin';
+import CreateAdmin from './Components/CreateAdmin';
+import CreateProducts from './Components/CreateProducts';
+import ReadAdminTable from './Components/ReadAdminTable';
+import ReadProductTable from './Components/ReadProductTable';
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -89,6 +94,22 @@ const App = () => {
             />
           }
         />
+	<Route path="/admin" element={<Admin />}>
+					<Route path="createAdmin" element={<CreateAdmin token={token} />} />
+					<Route
+						path="createProduct"
+						element={
+							<CreateProducts
+								products={products}
+								setProducts={setProducts}
+								token={token}
+							/>
+						}
+					/>
+				</Route>
+
+
+
       </Routes>
       <NotificationContainer />
     </>
