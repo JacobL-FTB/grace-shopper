@@ -64,10 +64,12 @@ const Cart = ({ setCheckoutProducts, setTotal, setCartProducts }) => {
     if (!token) {
       newarr = products.filter((crnt) => {
         if (crnt.productId === product.productId) {
+          console.log(value);
           crnt.count = Number(value);
         }
         return true;
       });
+      console.log(newarr);
       setProducts(newarr);
       localStorage.setItem('products', JSON.stringify(newarr));
     } else {
@@ -84,7 +86,7 @@ const Cart = ({ setCheckoutProducts, setTotal, setCartProducts }) => {
       const edit = await editProductCount(value, product.id);
       console.log(edit);
     }
-    history(0);
+    // history(0);
   };
 
   useEffect(() => {
@@ -178,7 +180,7 @@ const Cart = ({ setCheckoutProducts, setTotal, setCartProducts }) => {
                       max={product.inventory}
                       key={index}
                       onChange={(event) =>
-                        handleCount(product, event.target.value)
+                        handleCount(product, {}, event.target.value)
                       }
                     />
                     <h4>Subtotal: ${productTotal}</h4>

@@ -2,6 +2,7 @@ import { BsCart2 } from 'react-icons/bs';
 import { useNavigate } from 'react-router';
 import { purchaseCart } from '../api';
 import './css/Checkout.css';
+
 const Checkout = ({ checkoutProducts, total, cartProducts }) => {
   const lstoken = localStorage.getItem('token');
   const history = useNavigate();
@@ -10,6 +11,8 @@ const Checkout = ({ checkoutProducts, total, cartProducts }) => {
     window.confirm('Purchase Cart? Total: $' + total);
     if (!lstoken) {
       localStorage.removeItem('products');
+      history('/');
+      history(0);
     } else {
       const purchase = purchaseCart();
       history('/');
