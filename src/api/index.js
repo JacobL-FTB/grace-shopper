@@ -1,126 +1,132 @@
 const BASE_URL = 'http://localhost:3001/api';
 const lstoken = localStorage.getItem('token');
 
-
-
 export const fetchAdmin = async () => {
-	try {
-		const response = await fetch(`${BASE_URL}/user/admin`);
-		const info = await response.json();
-		// console.log("fetchAdmin", info.users);
-		return info.users;
-	} catch (error) {
-		console.error(`Error retrieving admins ${error}`);
-	}
+  try {
+    const response = await fetch(`${BASE_URL}/user/admin`);
+    const info = await response.json();
+    // console.log("fetchAdmin", info.users);
+    return info.users;
+  } catch (error) {
+    console.error(`Error retrieving admins ${error}`);
+  }
 };
-
 
 export const registerAdmin = async (email, username, password, isAdmin) => {
-	try {
-		const response = await fetch(`${BASE_URL}/user/register/admin`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				email,
-				username,
-				password,
-				isAdmin,
-			}),
-		});
-		const info = await response.json();
+  try {
+    const response = await fetch(`${BASE_URL}/user/register/admin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        username,
+        password,
+        isAdmin,
+      }),
+    });
+    const info = await response.json();
 
-		return info;
-	} catch (error) {
-		console.error(`Error registering a user ${error}`);
-	}
+    return info;
+  } catch (error) {
+    console.error(`Error registering a user ${error}`);
+  }
 };
-
-
 
 export const addProducts = async (
-	localSourcedToken,
-	title,
-	price,
-	category,
-	description,
-	imgURL,
-	inventory
+  localSourcedToken,
+  title,
+  price,
+  category,
+  description,
+  imgURL,
+  inventory
 ) => {
-	try {
-		const response = await fetch(`${BASE_URL}/products`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${localSourcedToken}`,
-			},
+  try {
+    const response = await fetch(`${BASE_URL}/products`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${lstoken}`,
+      },
 
-			body: JSON.stringify({
-				title,
-				price,
-				category,
-				description,
-				imgURL,
-				inventory,
-			}),
-		});
-		const info = await response.json();
-		return info;
-	} catch (error) {
-		console.error(`Error adding products ${error}`);
-	}
+      body: JSON.stringify({
+        title,
+        price,
+        category,
+        description,
+        imgURL,
+        inventory,
+      }),
+    });
+    const info = await response.json();
+    return info;
+  } catch (error) {
+    console.error(`Error adding products ${error}`);
+  }
 };
 
+export const fetchAllUsers = async () => {
+  const response = await fetch(`${BASE_URL}/user/view`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${lstoken}`,
+    },
+  });
+  const info = response.json();
+  console.log(info);
+  return info;
+};
 //
 export const updateProducts = async (
-	localSourcedToken,
-	id,
-	title,
-	price,
-	category,
-	description,
-	imgURL,
-	inventory
+  localSourcedToken,
+  id,
+  title,
+  price,
+  category,
+  description,
+  imgURL,
+  inventory
 ) => {
-	try {
-		const response = await fetch(`${BASE_URL}/products/${id}`, {
-			method: "PATCH",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${localSourcedToken}`,
-			},
-			body: JSON.stringify({
-				title,
-				price,
-				category,
-				description,
-				imgURL,
-				inventory,
-			}),
-		});
-		const info = await response.json();
-		return info;
-	} catch (error) {
-		console.error(`Error updating products ${error}`);
-	}
+  try {
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localSourcedToken}`,
+      },
+      body: JSON.stringify({
+        title,
+        price,
+        category,
+        description,
+        imgURL,
+        inventory,
+      }),
+    });
+    const info = await response.json();
+    return info;
+  } catch (error) {
+    console.error(`Error updating products ${error}`);
+  }
 };
 
 export const deleteProducts = async (id, token) => {
-	try {
-		const response = await fetch(`${BASE_URL}/products/${id}`, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		const info = await response.json();
+  try {
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const info = await response.json();
 
-		return info;
-	} catch (error) {
-		console.error(`Error deleting a product ${error}`);
-	}
+    return info;
+  } catch (error) {
+    console.error(`Error deleting a product ${error}`);
+  }
   try {
     const response = await fetch(`${BASE_URL}/products`);
     const info = await response.json();
@@ -132,7 +138,13 @@ export const deleteProducts = async (id, token) => {
 
 export const fetchUser = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/user/me`);
+    const response = await fetch(`${BASE_URL}/user/me`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${lstoken}`,
+      },
+    });
+    console.log(response);
     const info = await response.json();
     console.log(info);
     return info;
@@ -150,8 +162,6 @@ export const fetchProducts = async () => {
     throw error;
   }
 };
-
-
 
 export const fetchProductById = async (id) => {
   try {

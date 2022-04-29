@@ -33,12 +33,14 @@ const App = () => {
   const [token, setToken] = useState([]);
 
   useEffect(() => {
-    fetchUser().then((user) => {
-      console.log(user, 'user');
+    const getUser = async () => {
+      const user = await fetchUser();
+      console.log(user);
       if (user) {
         setUserInfo(user);
       }
-    });
+    };
+    getUser();
     createCart();
     const lstoken = localStorage.getItem('token');
     setToken(lstoken);
@@ -94,22 +96,21 @@ const App = () => {
             />
           }
         />
-	<Route path="/admin" element={<Admin />}>
-					<Route path="createAdmin" element={<CreateAdmin token={token} />} />
-					<Route
-						path="createProduct"
-						element={
-							<CreateProducts
-								products={products}
-								setProducts={setProducts}
-								token={token}
-							/>
-						}
-					/>
-				</Route>
-
-
-
+        <Route path="/admin" element={<Admin />} />
+        <Route
+          path="/admin/createAdmin"
+          element={<CreateAdmin token={token} />}
+        />
+        <Route
+          path="/admin/createProduct"
+          element={
+            <CreateProducts
+              products={products}
+              setProducts={setProducts}
+              token={token}
+            />
+          }
+        />
       </Routes>
       <NotificationContainer />
     </>

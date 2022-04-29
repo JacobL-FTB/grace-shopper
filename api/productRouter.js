@@ -50,7 +50,7 @@ productRouter.get('/categories/:categoryName', async (req, res, next) => {
 });
 
 productRouter.post('/', requireAdmin, async (req, res, next) => {
-  const { title, price, category, description, inventory } = req.body;
+  const { title, price, category, description, inventory, imgURL } = req.body;
 
   try {
     const product = await createProduct({
@@ -59,6 +59,7 @@ productRouter.post('/', requireAdmin, async (req, res, next) => {
       category,
       description,
       inventory,
+      imgURL,
     });
 
     if (product) {

@@ -19,9 +19,9 @@ const Login = ({ setUserInfo }) => {
       }
       console.log(info);
       if (info) {
-        history('/');
         fetchUser().then((user) => {
           setUserInfo(user);
+          history('/');
         });
       }
       localStorage.setItem('token', info.token);
@@ -41,14 +41,14 @@ const Login = ({ setUserInfo }) => {
         localStorage.removeItem('products');
       }
       //
-      if (infoU.isAdmin) {
-				setAdmin(infoU.isAdmin);
-				history("/admin");
-        history(0)
-			} else {
-				history("/");
-         history(0)
-			}
+      if (info.isAdmin) {
+        setAdmin(info.isAdmin);
+        history('/admin');
+        history(0);
+      } else {
+        history('/');
+        history(0);
+      }
     } catch (error) {
       throw error;
     }
